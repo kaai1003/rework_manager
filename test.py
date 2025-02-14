@@ -12,10 +12,11 @@ from models.users import User
 from models.engine.database_manager import get_connection
 from models.engine.database_manager import get_obj
 from models.engine.database_manager import get_all
-
+from models.engine.database_manager import load_csv
 
 print(get_connection())
 
-usr1 = get_obj("users", "username", "aql1")
-user1 = User(**usr1)
-user1.delete()
+refs = load_csv("refs.csv")
+for ref in refs:
+    obj = Reference(**ref)
+    obj.save()

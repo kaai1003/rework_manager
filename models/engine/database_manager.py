@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Database connection module"""
 
+import csv
 import psycopg2
 from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
@@ -123,3 +124,9 @@ def delete_obj(table, obj_id):
     finally:
         cursor.close()
         conn.close()
+
+def load_csv(csv_file):
+    """Load CSV file as a list of dictionaries."""
+    with open(csv_file, mode="r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)  # Reads CSV as dictionary
+        return [dict(row) for row in reader]

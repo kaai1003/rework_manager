@@ -1,7 +1,7 @@
 -- Active: 1736716074336@@127.0.0.1@5432@rework_db
 CREATE TABLE users (
     id VARCHAR PRIMARY KEY,
-    username VARCHAR NOT NULL,
+    username VARCHAR NOT NULL UNIQUE,
     password VARCHAR NOT NULL,
     role VARCHAR NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
