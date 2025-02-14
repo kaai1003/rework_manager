@@ -10,21 +10,12 @@ from models.reworkers import Reworkers
 from models.reworktables import ReworkTable
 from models.users import User
 from models.engine.database_manager import get_connection
+from models.engine.database_manager import get_obj
+from models.engine.database_manager import get_all
 
 
 print(get_connection())
 
-
-ref1_dict = {"ref": "123456 01",
-             "project": "P21",
-             "famille": "PPL",
-             "car_type": "Thermique"}
-ref1 = Reference(**ref1_dict)
-print("-------Reference1--------")
-print(ref1.__dict__)
-ref2 = Reference()
-print("-------Reference2--------")
-print(ref2.__dict__)
-ref2.ref = "123432 02"
-print("-------Reference1:ref--------")
-print(ref2.to_dict())
+usr1 = get_obj("users", "username", "aql1")
+user1 = User(**usr1)
+user1.delete()

@@ -1,4 +1,4 @@
--- Active: 1736716074336@@127.0.0.1@5432
+-- Active: 1736716074336@@127.0.0.1@5432@rework_db
 CREATE TABLE users (
     id VARCHAR PRIMARY KEY,
     username VARCHAR NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE references (
+CREATE TABLE reference (
     id VARCHAR PRIMARY KEY,
     ref VARCHAR NOT NULL,
 	project VARCHAR NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE process (
 
 CREATE TABLE reworktables (
     id VARCHAR PRIMARY KEY,
-	table INT NOT NULL,
+	nr_table INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -81,6 +81,7 @@ CREATE TABLE reworkdetails (
     processfailure VARCHAR NOT NULL,
     reworktable INT NOT NULL,
     reworker VARCHAR NOT NULL,
+    quality VARCHAR NOT NULL,
     status VARCHAR NOT NULL,
     reworkduration FLOAT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
