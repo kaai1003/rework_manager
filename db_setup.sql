@@ -1,4 +1,4 @@
--- Active: 1736716074336@@127.0.0.1@5432@rework_db
+-- Active: 1739633068806@@127.0.0.1@5432@rework_db
 CREATE TABLE users (
     id VARCHAR PRIMARY KEY,
     username VARCHAR NOT NULL UNIQUE,
