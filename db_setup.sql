@@ -75,15 +75,16 @@ CREATE TABLE reworkdetails (
     car_type VARCHAR NOT NULL,
     line INT NOT NULL,
     superviseur VARCHAR NOT NULL,
+    prod_date TIMESTAMP NOT NULL,
     reworkcard VARCHAR NOT NULL,
     reworkfailure VARCHAR NOT NULL,
     failuredetails VARCHAR NOT NULL,
     processfailure VARCHAR NOT NULL,
     reworktable INT NOT NULL,
     reworker VARCHAR NOT NULL,
-    quality VARCHAR NOT NULL,
+    quality VARCHAR DEFAULT NULL,
     status VARCHAR NOT NULL,
-    reworkduration FLOAT NOT NULL,
+    reworkduration FLOAT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
