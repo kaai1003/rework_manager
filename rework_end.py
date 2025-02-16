@@ -2,13 +2,11 @@ import customtkinter
 import os
 from tkinter import messagebox
 from PIL import Image
-from app_logic.csv_handler import get_csv_name
-from app_logic.csv_handler import check_ref
-from app_logic.csv_handler import read_from_csv
-from app_logic.csv_handler import save_to_csv
-from app_logic.csv_handler import update_csv
-from app_logic.print_label import generate_label
 from datetime import datetime
+
+from models.engine.database_manager import get_all
+from models.engine.database_manager import get_obj
+from models.reworkdetails import ReworkDetails
 
 
 class App(customtkinter.CTk):
@@ -18,6 +16,7 @@ class App(customtkinter.CTk):
         self.title("START REWORK STATION")
         self.geometry("1050x800")
         self.operator = ""
+        self.list_users = []
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
@@ -78,18 +77,49 @@ class App(customtkinter.CTk):
         self.login_frame_image_label = customtkinter.CTkLabel(self.login_frame, text="", image=self.login_image)
         self.login_frame_image_label.grid(row=1, column=0, padx=20, pady=10)
         
-        # Matricule Input
-        self.login_frame_entry_1 = customtkinter.CTkEntry(self.login_frame, placeholder_text="ex: 12345",
-                                                         height=50,
-                                                         width=400,
-                                                         font=("Helvetica", 30),
+        # Login User Frame
+        self.login_user_frame = customtkinter.CTkFrame(self.login_frame, corner_radius=0, fg_color="transparent")
+        self.login_user_frame.grid(row=2, column=0, padx=20, pady=0)
+        self.login_user_entry_label_1 = customtkinter.CTkLabel(self.login_user_frame,
+                                                               text="Username: ",
+                                                               compound="left",
+                                                               font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                               text_color="blue")
+        self.login_user_entry_label_1.grid(row=0, column=0, padx=10, pady=5)
+        users = get_all("users")
+        for user in users:
+            self.list_users.append(user["username"])
+        self.user_var = customtkinter.StringVar()
+        self.login_frame_entry_1 = customtkinter.CTkComboBox(self.login_user_frame,
+                                                            state='readonly',
+                                                            values=self.list_users,
+                                                            variable=self.user_var,
+                                                            width=200)
+        self.login_frame_entry_1.grid(row=0, column=1, padx=10, pady=0)
+        
+        
+        # Login Password Frame
+        self.login_pwd_frame = customtkinter.CTkFrame(self.login_frame, corner_radius=0, fg_color="transparent")
+        self.login_pwd_frame.grid(row=3, column=0, padx=20, pady=5)
+        self.login_pwd_entry_label_1 = customtkinter.CTkLabel(self.login_pwd_frame,
+                                                               text="Password: ",
+                                                               compound="left",
+                                                               font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                               text_color="blue")
+        self.login_pwd_entry_label_1.grid(row=0, column=0, padx=10, pady=5)
+        self.login_frame_entry_2 = customtkinter.CTkEntry(self.login_pwd_frame, placeholder_text="Password",
+                                                         height=30,
+                                                         width=200,
+                                                         font=("Helvetica", 25),
                                                          corner_radius=10,
                                                          text_color="black",
                                                          placeholder_text_color="#fc9522",
                                                          fg_color=("#b9dbfc"),
-                                                         state="normal")
-        self.login_frame_entry_1.grid(row=2, column=0, padx=20, pady=0)
+                                                         state="normal",
+                                                         show='*')
+        self.login_frame_entry_2.grid(row=0, column=1, padx=10, pady=0)
         
+        # Login Button
         self.login_button = customtkinter.CTkButton(self.login_frame,
                                                     corner_radius=10,
                                                     height=60,
@@ -117,6 +147,74 @@ class App(customtkinter.CTk):
         self.home_frame_image_label = customtkinter.CTkLabel(self.home_frame, text="", image=self.qrcode_image)
         self.home_frame_image_label.grid(row=2, column=0, padx=20, pady=10)
         
+        #rework Infos Frame
+        self.rework_infos_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.rework_infos_frame.grid(row=0, column=0, padx=20, pady=0)
+        self.home_frame_large_image_label1 = customtkinter.CTkLabel(self.rework_infos_frame, text="", image=self.large_test_image)
+        self.home_frame_large_image_label1.grid(row=0, column=0, padx=20, pady=0)
+
+        self.home_frame_label1 = customtkinter.CTkLabel(self.rework_infos_frame,
+                                                       text="",
+                                                       image=self.info_image)
+        self.home_frame_label1.grid(row=1, column=0, padx=20, pady=0)
+        
+        self.fx_infos_frame = customtkinter.CTkFrame(self.rework_infos_frame, corner_radius=0, fg_color="transparent")
+        self.fx_infos_frame.grid(row=2, column=0, padx=20, pady=0)
+        self.fx_infos_label_1 = customtkinter.CTkLabel(self.fx_infos_frame,
+                                                         text="Reference: ",
+                                                         compound="left",
+                                                         font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                         text_color="blue")
+        self.fx_infos_label_1.grid(row=0, column=0, padx=10, pady=5)
+        self.fx_infos_label2 = customtkinter.CTkLabel(self.fx_infos_frame,
+                                                        text="Project: ",
+                                                        compound="left",
+                                                        font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                        text_color="blue")
+        self.fx_infos_label2.grid(row=1, column=0, padx=10, pady=5)
+        self.fx_infos_label3 = customtkinter.CTkLabel(self.fx_infos_frame,
+                                                        text="Famille: ",
+                                                        compound="left",
+                                                        font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                        text_color="blue")
+        self.fx_infos_label3.grid(row=2, column=0, padx=10, pady=5)
+        self.fx_infos_label4 = customtkinter.CTkLabel(self.fx_infos_frame,
+                                                        text="Car Type: ",
+                                                        compound="left",
+                                                        font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                        text_color="blue")
+        self.fx_infos_label4.grid(row=3, column=0, padx=10, pady=5)
+        self.fx_infos_label5 = customtkinter.CTkLabel(self.fx_infos_frame,
+                                                        text="Line: ",
+                                                        compound="left",
+                                                        font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                        text_color="blue")
+        self.fx_infos_label5.grid(row=0, column=1, padx=10, pady=5)
+        self.fx_infos_label6 = customtkinter.CTkLabel(self.fx_infos_frame,
+                                                        text="Supervisor: ",
+                                                        compound="left",
+                                                        font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                        text_color="blue")
+        self.fx_infos_label6.grid(row=1, column=1, padx=10, pady=5)
+        self.fx_infos_label7 = customtkinter.CTkLabel(self.fx_infos_frame,
+                                                        text="Production Date: ",
+                                                        compound="left",
+                                                        font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                        text_color="blue")
+        self.fx_infos_label7.grid(row=2, column=1, padx=10, pady=5)
+        self.fx_infos_label8 = customtkinter.CTkLabel(self.fx_infos_frame,
+                                                        text="Erreur: ",
+                                                        compound="left",
+                                                        font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                        text_color="blue")
+        self.fx_infos_label8.grid(row=3, column=1, padx=10, pady=5)
+        self.fx_infos_label9 = customtkinter.CTkLabel(self.fx_infos_frame,
+                                                        text="Erreur Details: ",
+                                                        compound="left",
+                                                        font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                        text_color="blue")
+        self.fx_infos_label9.grid(row=4, column=0, padx=10, pady=5)
+        
         # scan QR code
         self.home_frame_entry_1 = customtkinter.CTkEntry(self.home_frame, placeholder_text="SCAN QR CODE LABEL",
                                                          height=50,
@@ -132,9 +230,9 @@ class App(customtkinter.CTk):
         
         # Button save and Print
         self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame,
-                                                           text="Save and Print",
+                                                           text="Check Rework",
                                                            font=customtkinter.CTkFont(size=17, weight="bold"),
-                                                           command=self.on_submit,
+                                                           command=self.show_infos,
                                                            fg_color=("#066603"),
                                                            height=50,
                                                            width=200)
@@ -202,9 +300,8 @@ class App(customtkinter.CTk):
         label_data['REWORKTIME'] = rework_card
         
         # print Label
-        generate_label(rework_card, 'end', label_data)
+        #generate_label(rework_card, 'end', label_data)
         # save data to csv
-        save_to_csv(path,csv_data)
         self.home_frame_entry_1.delete(0, customtkinter.END)
         
     def select_frame_by_name(self, name):
@@ -222,6 +319,10 @@ class App(customtkinter.CTk):
             self.home_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.home_frame.grid_forget()
+        if name == "rework":
+            self.rework_infos_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.rework_infos_frame.grid_forget()
         if name == "settings":
             self.second_frame.grid(row=0, column=1, sticky="nsew")
         else:
@@ -232,14 +333,42 @@ class App(customtkinter.CTk):
             self.third_frame.grid_forget()
 
     def login_button_event(self, event=None):
-        self.operator = self.login_frame_entry_1.get()
-        if self.operator == "" or len(self.operator) != 5:
-            self.login_frame_entry_1.delete(0, customtkinter.END)
-            messagebox.showerror("Error", "Invalid Operator Code!!!")
+        self.operator = self.user_var.get()
+        if self.operator == "":
+            self.login_frame_entry_2.delete(0, customtkinter.END)
+            self.login_frame_entry_1.set("")
+            messagebox.showerror("Error", "Invalid Username!!!")
             self.operator = ""
             return
-        self.select_frame_by_name("home")
-        self.login_frame_entry_1.delete(0, customtkinter.END)
+        self.password = self.login_frame_entry_2.get()
+        self.user = get_obj("users", "username", self.operator)
+        if self.user:
+            if self.user["password"] == self.password:
+                if self.user["role"] == "quality":
+                    self.select_frame_by_name("home")
+                    self.login_frame_entry_2.delete(0, customtkinter.END)
+                    self.login_frame_entry_1.set("")
+                else:
+                    self.login_frame_entry_2.delete(0, customtkinter.END)
+                    self.login_frame_entry_1.set("")
+                    messagebox.showerror("Error", "Invalid Role!!!")
+                    self.operator = ""
+                    self.password = ""
+                    return
+            else:
+                self.login_frame_entry_2.delete(0, customtkinter.END)
+                self.login_frame_entry_1.set("")
+                messagebox.showerror("Error", "Invalid Password!!!")
+                self.operator = ""
+                self.password = ""
+                return
+        else:
+            self.login_frame_entry_2.delete(0, customtkinter.END)
+            self.login_frame_entry_1.set("")
+            messagebox.showerror("Error", "User Not Found!!!")
+            self.operator = ""
+            self.password = ""
+            return
 
     def home_button_event(self):
         self.operator = ""
@@ -262,6 +391,8 @@ class App(customtkinter.CTk):
         self.home_frame_entry_4.delete(0, customtkinter.END)
         self.home_frame_entry_5.delete(0, customtkinter.END)
         self.home_frame_entry_6.delete(0, customtkinter.END)
+
+    def show_infos(self):
 
 if __name__ == "__main__":
     app = App()
