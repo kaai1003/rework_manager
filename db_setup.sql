@@ -2,6 +2,7 @@
 CREATE TABLE users (
     id VARCHAR PRIMARY KEY,
     username VARCHAR NOT NULL UNIQUE,
+    usercard VARCHAR NOT NULL UNIQUE,
     password VARCHAR NOT NULL,
     role VARCHAR NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -69,6 +70,7 @@ CREATE TABLE reworkers (
 
 CREATE TABLE reworkdetails (
     id VARCHAR PRIMARY KEY,
+    usercard VARCHAR NOT NULL,
     ref VARCHAR NOT NULL,
 	project VARCHAR NOT NULL,
 	famille VARCHAR NOT NULL,

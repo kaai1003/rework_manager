@@ -1,13 +1,3 @@
-pip install PyQt6
-pip install PySide6
------PACMAN------
-
---->MSYS2
-
-pacman -S mingw-w64-x86_64-cairo
-
-
-
-
---------Test-------
-from Custom_Widgets.ProgressIndicator import test
+pip install Pillow
+pip install customtkinter
+pip install psycopg2
