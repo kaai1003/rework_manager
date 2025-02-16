@@ -304,16 +304,14 @@ class App(customtkinter.CTk):
                                                                font=customtkinter.CTkFont(size=17, weight="bold"),
                                                                text_color="black")
         self.sup_label.grid(row=0, column=0, padx=0, pady=5)
+        sups = get_all("lines")
+        self.list_sups = []
+        for s in sups:
+            self.list_sups.append(s["superviseur"])
         self.sup_var = customtkinter.StringVar()
         self.sup_entry = customtkinter.CTkComboBox(self.info_sup_frame,
                                                             state='readonly',
-                                                            values=['LAD',
-                                                                    'PTA',
-                                                                    'Surmoulage',
-                                                                    'BOL1',
-                                                                    'BOL2',
-                                                                    'Control Final',
-                                                                    'CSL2'],
+                                                            values=self.list_sups,
                                                             variable=self.sup_var,
                                                             width=300)
         self.sup_entry.grid(row=0, column=1, padx=0, pady=0)
