@@ -15,71 +15,13 @@ class App(customtkinter.CTk):
 
         self.title("START REWORK STATION")
         self.geometry("1050x800")
+        self.attributes("-fullscreen", True)
         self.operator = ""
         self.list_users = []
         username = ""
         usercard = ""
         role = ""
-        self.failures_list = ["Connexion endommagee",
-                              "Erreur connexion",
-                              "Joint dechire",
-                              "Erreur de section de fils",
-                              "Sertissage sur isolant",
-                              "Erreur cosse",
-                              "Exces de collle sur cosse",
-                              "Manque etammage",
-                              "Ergot de connexion manquant",
-                              "Manchon mal positionnes",
-                              "Manchon dechires",
-                              "Erreur configuration",
-                              "Erreur Manchon",
-                              "Brains echapes",
-                              "Bavure sur le srtissage",
-                              "Contact manquant",
-                              "Fil inverse",
-                              "Fil coupe / casse",
-                              "Connecteur non verrouille",
-                              "Bouchon du connecteur dechire",
-                              "Erreur de composant",
-                              "Manque laniere de connecteur",
-                              "Tube ecrase",
-                              "Fil manquant",
-                              "Erreur Gaine/Gaffe",
-                              "Fil en plus",
-                              "Manque relais",
-                              "Manque Clip",
-                              "Clip endommage",
-                              "Mauvaise position de l'element",
-                              "enrubannage non-conforme",
-                              "BFRM endommage",
-                              "Connecteur endommage",
-                              "Gaine mal coupe/fissure",
-                              "Branche trop courte",
-                              "Branche trop longue",
-                              "Fusible deforme",
-                              "Fusible en mauvaise position",
-                              "PIN deforme",
-                              "Relais deforme",
-                              "Relais en mauvaise position",
-                              "Capot de connecteur casse",
-                              "Noeud mal realise",
-                              "Bavures / Fissures sur la surface",
-                              "Corps etranger dans l'injection",
-                              "Fils/gaine n'est pas au milieu de l'injection",
-                              "Bulles d'air sur l'injection",
-                              "Manque matiere / Non moule completement",
-                              "Exces matiere sur la piece",
-                              "Mauvaise matiere (granules)",
-                              "Faute d'injection sur le passe-cable",
-                              "Dechets sur la surface",
-                              "Point d'injection trop long / mal arase",
-                              "Piece surmoule non etanche",
-                              "BFRM CASSE",
-                              "BFRM ABIME",
-                              "BOITIER CASSE",
-                              "BOITIER ABIME",
-                              "MANQUE MASSE"
-                              ]
+        self.failures_list = []
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
@@ -198,7 +140,7 @@ class App(customtkinter.CTk):
         # create home frame
         self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.home_frame.grid_columnconfigure(0, weight=1)
-
+        
         # User Informations Frame
         self.info_user_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="orange")
         self.info_user_frame.grid(row=0, column=0, padx=20, pady=0)
@@ -231,16 +173,19 @@ class App(customtkinter.CTk):
                                                        image=self.info_image)
         self.home_frame_label.grid(row=2, column=0, padx=20, pady=0)
         
+        #reference + date Production Frame
+        self.info_frame1 = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
+        self.info_frame1.grid(row=3, column=0, padx=5, pady=5)
         #reference input Frame
-        self.info_ref_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
-        self.info_ref_frame.grid(row=3, column=0, padx=0, pady=5)
+        self.info_ref_frame = customtkinter.CTkFrame(self.info_frame1, corner_radius=0, fg_color="transparent")
+        self.info_ref_frame.grid(row=0, column=0, padx=5, pady=5)
         
         self.home_frame_entry_label_1 = customtkinter.CTkLabel(self.info_ref_frame,
                                                                text="Harness Reference :",
                                                                compound="left",
                                                                font=customtkinter.CTkFont(size=17, weight="bold"),
                                                                text_color="black")
-        self.home_frame_entry_label_1.grid(row=0, column=0, padx=20, pady=0)
+        self.home_frame_entry_label_1.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
         self.home_frame_entry_1 = customtkinter.CTkEntry(self.info_ref_frame, placeholder_text="ex: 1234567 01",
                                                          height=20,
                                                          width=300,
@@ -252,17 +197,17 @@ class App(customtkinter.CTk):
                                                          state="normal",
                                                          border_color="#878bfa",
                                                          show='*')
-        self.home_frame_entry_1.grid(row=0, column=1, padx=0, pady=0)
+        self.home_frame_entry_1.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
         
         #date production fx
-        self.info_date_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
-        self.info_date_frame.grid(row=4, column=0, padx=0, pady=0)
+        self.info_date_frame = customtkinter.CTkFrame(self.info_frame1, corner_radius=0, fg_color="transparent")
+        self.info_date_frame.grid(row=0, column=1, padx=5, pady=5)
         self.home_frame_entry_label_3 = customtkinter.CTkLabel(self.info_date_frame,
-                                                               text="Date Production FX :      ",
+                                                               text="Date Production FX :",
                                                                compound="left",
                                                                font=customtkinter.CTkFont(size=17, weight="bold"),
                                                                text_color="black")
-        self.home_frame_entry_label_3.grid(row=0, column=0, padx=0, pady=0)
+        self.home_frame_entry_label_3.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
         self.home_frame_entry_3 = customtkinter.CTkEntry(self.info_date_frame, placeholder_text="ex: 26-11-2024 12:10:10",
                                                          height=20,
                                                          width=300,
@@ -273,16 +218,20 @@ class App(customtkinter.CTk):
                                                          fg_color=("#b9dbfc"),
                                                          state="normal",
                                                          border_color="#878bfa")
-        self.home_frame_entry_3.grid(row=0, column=1, padx=0, pady=0)
+        self.home_frame_entry_3.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
+        
+        #prd line + superviseur Frame
+        self.info_frame2 = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
+        self.info_frame2.grid(row=4, column=0, padx=5, pady=5)
         #Production Line
-        self.info_line_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
-        self.info_line_frame.grid(row=5, column=0, padx=0, pady=0)
+        self.info_line_frame = customtkinter.CTkFrame(self.info_frame2, corner_radius=0, fg_color="transparent")
+        self.info_line_frame.grid(row=0, column=0, padx=5, pady=5)
         self.home_frame_entry_label_4 = customtkinter.CTkLabel(self.info_line_frame,
-                                                               text="Production Line :            ",
+                                                               text="Production Line :",
                                                                compound="left",
                                                                font=customtkinter.CTkFont(size=17, weight="bold"),
                                                                text_color="black")
-        self.home_frame_entry_label_4.grid(row=0, column=0, padx=0, pady=5)
+        self.home_frame_entry_label_4.grid(row=0, column=0, padx=5, pady=5)
         self.home_frame_entry_4 = customtkinter.CTkEntry(self.info_line_frame, placeholder_text="ex : 1",
                                                          height=20,
                                                          width=300,
@@ -293,17 +242,17 @@ class App(customtkinter.CTk):
                                                          fg_color=("#b9dbfc"),
                                                          state="normal",
                                                          border_color="#878bfa")
-        self.home_frame_entry_4.grid(row=0, column=1, padx=0, pady=0)
+        self.home_frame_entry_4.grid(row=0, column=1, padx=5, pady=5)
         
         #Superviseur
-        self.info_sup_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
-        self.info_sup_frame.grid(row=6, column=0, padx=0, pady=0)
+        self.info_sup_frame = customtkinter.CTkFrame(self.info_frame2, corner_radius=0, fg_color="transparent")
+        self.info_sup_frame.grid(row=0, column=1, padx=5, pady=5)
         self.sup_label = customtkinter.CTkLabel(self.info_sup_frame,
-                                                               text="Superviseur :                  ",
+                                                               text="Superviseur :",
                                                                compound="left",
                                                                font=customtkinter.CTkFont(size=17, weight="bold"),
                                                                text_color="black")
-        self.sup_label.grid(row=0, column=0, padx=0, pady=5)
+        self.sup_label.grid(row=0, column=0, padx=5, pady=5)
         sups = get_all("lines")
         self.list_sups = []
         for s in sups:
@@ -314,18 +263,20 @@ class App(customtkinter.CTk):
                                                             values=self.list_sups,
                                                             variable=self.sup_var,
                                                             width=300)
-        self.sup_entry.grid(row=0, column=1, padx=0, pady=0)
+        self.sup_entry.grid(row=0, column=1, padx=5, pady=5)
         
-        
+        #rework info frame
+        self.info_frame3 = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
+        self.info_frame3.grid(row=5, column=0, padx=5, pady=5)
         #rework input
-        self.info_rework_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
-        self.info_rework_frame.grid(row=7, column=0, padx=0, pady=0)
+        self.info_rework_frame = customtkinter.CTkFrame(self.info_frame3, corner_radius=0, fg_color="transparent")
+        self.info_rework_frame.grid(row=0, column=0, padx=5, pady=5)
         self.home_frame_entry_label_2 = customtkinter.CTkLabel(self.info_rework_frame,
-                                                               text="Reword Card :      ",
+                                                               text="Reword Card :",
                                                                compound="left",
                                                                font=customtkinter.CTkFont(size=17, weight="bold"),
                                                                text_color="black")
-        self.home_frame_entry_label_2.grid(row=0, column=0, padx=0, pady=5)
+        self.home_frame_entry_label_2.grid(row=0, column=0, padx=5, pady=5)
         self.home_frame_entry_2 = customtkinter.CTkEntry(self.info_rework_frame, placeholder_text="Scan Rework Card",
                                                          height=20,
                                                          width=300,
@@ -337,34 +288,40 @@ class App(customtkinter.CTk):
                                                          state="normal",
                                                          border_color="#878bfa",
                                                          show='*')
-        self.home_frame_entry_2.grid(row=0, column=1, padx=0, pady=0)
+        self.home_frame_entry_2.grid(row=0, column=1, padx=5, pady=5)
         
         #Failure Type
-        self.info_rework1_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
-        self.info_rework1_frame.grid(row=8, column=0, padx=0, pady=0)
+        self.info_rework1_frame = customtkinter.CTkFrame(self.info_frame3, corner_radius=0, fg_color="transparent")
+        self.info_rework1_frame.grid(row=0, column=1, padx=5, pady=5)
         self.home_frame_entry_label_5 = customtkinter.CTkLabel(self.info_rework1_frame,
-                                                               text="Failure Type :      ",
+                                                               text="Failure Type :",
                                                                compound="left",
                                                                font=customtkinter.CTkFont(size=17, weight="bold"),
                                                                text_color="black")
-        self.home_frame_entry_label_5.grid(row=0, column=0, padx=0, pady=5)
+        self.home_frame_entry_label_5.grid(row=0, column=0, padx=5, pady=5)
+        failures_type = get_all("failures")
+        for f in failures_type:
+            self.failures_list.append(f["failure"])
         self.subcategory_var = customtkinter.StringVar()
         self.home_frame_entry_5_sub = customtkinter.CTkComboBox(self.info_rework1_frame,
                                                                 state='readonly',
                                                                 values=self.failures_list,
                                                                 variable=self.subcategory_var,
                                                                 width=300)
-        self.home_frame_entry_5_sub.grid(row=0, column=1, padx=0, pady=0)
+        self.home_frame_entry_5_sub.grid(row=0, column=1, padx=5, pady=5)
         
+        #failure + process frame
+        self.info_frame4 = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
+        self.info_frame4.grid(row=6, column=0, padx=5, pady=5)
         #Failure Details
-        self.info_rework2_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
-        self.info_rework2_frame.grid(row=9, column=0, padx=0, pady=0)
+        self.info_rework2_frame = customtkinter.CTkFrame(self.info_frame4, corner_radius=0, fg_color="transparent")
+        self.info_rework2_frame.grid(row=0, column=0, padx=5, pady=5)
         self.home_frame_entry_label_r = customtkinter.CTkLabel(self.info_rework2_frame,
-                                                               text="Failure Description :      ",
+                                                               text="Failure Description :",
                                                                compound="left",
                                                                font=customtkinter.CTkFont(size=17, weight="bold"),
                                                                text_color="black")
-        self.home_frame_entry_label_r.grid(row=0, column=0, padx=0, pady=5)
+        self.home_frame_entry_label_r.grid(row=0, column=0, padx=5, pady=5)
         self.home_frame_entry_r = customtkinter.CTkEntry(self.info_rework2_frame, placeholder_text="ex : Connector name/Wire name/Clip name",
                                                          height=20,
                                                          width=300,
@@ -375,39 +332,40 @@ class App(customtkinter.CTk):
                                                          fg_color=("#b9dbfc"),
                                                          state="normal",
                                                          border_color="#878bfa")
-        self.home_frame_entry_r.grid(row=0, column=1, padx=0, pady=0)
+        self.home_frame_entry_r.grid(row=0, column=1, padx=5, pady=5)
         #Failure Process
-        self.info_process_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
-        self.info_process_frame.grid(row=10, column=0, padx=0, pady=0)
+        self.info_process_frame = customtkinter.CTkFrame(self.info_frame4, corner_radius=0, fg_color="transparent")
+        self.info_process_frame.grid(row=0, column=1, padx=5, pady=5)
         self.home_frame_entry_label_6 = customtkinter.CTkLabel(self.info_process_frame,
-                                                               text="Failure Process :      ",
+                                                               text="Failure Process :",
                                                                compound="left",
                                                                font=customtkinter.CTkFont(size=17, weight="bold"),
                                                                text_color="black")
-        self.home_frame_entry_label_6.grid(row=0, column=0, padx=0, pady=5)
+        self.home_frame_entry_label_6.grid(row=0, column=0, padx=5, pady=5)
+        self.list_process = []
+        processes = get_all("process")
+        for p in processes:
+            self.list_process.append(p["process"])
         self.process_var = customtkinter.StringVar()
         self.home_frame_entry_6 = customtkinter.CTkComboBox(self.info_process_frame,
                                                             state='readonly',
-                                                            values=['LAD',
-                                                                    'PTA',
-                                                                    'Surmoulage',
-                                                                    'BOL1',
-                                                                    'BOL2',
-                                                                    'Control Final',
-                                                                    'CSL2'],
+                                                            values=self.list_process,
                                                             variable=self.process_var,
                                                             width=300)
-        self.home_frame_entry_6.grid(row=0, column=1, padx=0, pady=0)
+        self.home_frame_entry_6.grid(row=0, column=1, padx=5, pady=5)
         
+        #Rework Table + Reworker Frame
+        self.info_frame5 = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
+        self.info_frame5.grid(row=7, column=0, padx=5, pady=5)
         #Rework Table
-        self.info_table_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
-        self.info_table_frame.grid(row=11, column=0, padx=0, pady=0)
+        self.info_table_frame = customtkinter.CTkFrame(self.info_frame5, corner_radius=0, fg_color="transparent")
+        self.info_table_frame.grid(row=0, column=0, padx=5, pady=5)
         self.rework_table_label = customtkinter.CTkLabel(self.info_table_frame,
-                                                               text="Rework Table :      ",
+                                                               text="Rework Table :",
                                                                compound="left",
                                                                font=customtkinter.CTkFont(size=17, weight="bold"),
                                                                text_color="black")
-        self.rework_table_label.grid(row=0, column=0, padx=0, pady=5)
+        self.rework_table_label.grid(row=0, column=0, padx=5, pady=5)
         self.table_var = customtkinter.StringVar()
         self.rework_table_entry = customtkinter.CTkComboBox(self.info_table_frame,
                                                             state='readonly',
@@ -418,38 +376,137 @@ class App(customtkinter.CTk):
                                                                     '5'],
                                                             variable=self.table_var,
                                                             width=300)
-        self.rework_table_entry.grid(row=0, column=1, padx=0, pady=0)
+        self.rework_table_entry.grid(row=0, column=1, padx=5, pady=5)
         
         #Reworker
-        self.info_reworker_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
-        self.info_reworker_frame.grid(row=12, column=0, padx=0, pady=0)
+        self.info_reworker_frame = customtkinter.CTkFrame(self.info_frame5, corner_radius=0, fg_color="transparent")
+        self.info_reworker_frame.grid(row=0, column=1, padx=5, pady=5)
         self.reworker_label = customtkinter.CTkLabel(self.info_reworker_frame,
-                                                               text="Reworker Name :      ",
+                                                               text="Reworker Name :",
                                                                compound="left",
                                                                font=customtkinter.CTkFont(size=17, weight="bold"),
                                                                text_color="black")
-        self.reworker_label.grid(row=0, column=0, padx=0, pady=5)
+        self.reworker_label.grid(row=0, column=0, padx=5, pady=5)
+        self.list_reworkers = []
+        all_reworkers = get_all("reworkers")
+        for r in all_reworkers:
+            self.list_reworkers.append(r["matricule"])
         self.reworker_var = customtkinter.StringVar()
         self.reworker_entry = customtkinter.CTkComboBox(self.info_reworker_frame,
                                                             state='readonly',
-                                                            values=['1',
-                                                                    '2',
-                                                                    '3',
-                                                                    '4',
-                                                                    '5'],
-                                                            variable=self.table_var,
+                                                            values=self.list_reworkers,
+                                                            variable=self.reworker_var,
                                                             width=300)
-        self.reworker_entry.grid(row=0, column=1, padx=0, pady=0)
+        self.reworker_entry.grid(row=0, column=1, padx=5, pady=5)
         
         # Button save and Print
         self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame,
                                                            text="Save and Print",
                                                            font=customtkinter.CTkFont(size=17, weight="bold"),
                                                            command=self.on_submit,
-                                                           fg_color=("#066603"),
+                                                           fg_color=("blue", "green"),
                                                            height=50,
                                                            width=200)
-        self.home_frame_button_1.grid(row=15, column=0, padx=20, pady=20)
+        self.home_frame_button_1.grid(row=8, column=0, padx=10, pady=10)
+        
+        # rework tables status frame
+        self.tables_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="transparent")
+        self.tables_frame.grid(row=9, column=0, padx=5, pady=5)
+        #table 1
+        self.table1_frame = customtkinter.CTkFrame(self.tables_frame, corner_radius=0, fg_color="transparent")
+        self.table1_frame.grid(row=0, column=0, padx=5, pady=5)
+        self.table1_label1 = customtkinter.CTkLabel(self.table1_frame,
+                                                    text="Table 1",
+                                                    compound="left",
+                                                    font=customtkinter.CTkFont(size=17, weight="bold"),
+                                                    text_color="black")
+        self.table1_label1.grid(row=0, column=0, padx=5, pady=5)
+        self.table1_label2 = customtkinter.CTkLabel(self.table1_frame,
+                                                    text= "0 FX",
+                                                    compound="left",
+                                                    font=customtkinter.CTkFont(size=17, weight="bold"),
+                                                    text_color="black",
+                                                    bg_color="green",
+                                                    corner_radius=10,
+                                                    height=50,
+                                                    width=50)
+        self.table1_label2.grid(row=1, column=0, padx=5, pady=5)
+        #table 2
+        self.table2_frame = customtkinter.CTkFrame(self.tables_frame, corner_radius=0, fg_color="transparent")
+        self.table2_frame.grid(row=0, column=1, padx=5, pady=5)
+        self.table2_label1 = customtkinter.CTkLabel(self.table2_frame,
+                                                    text="Table 2",
+                                                    compound="left",
+                                                    font=customtkinter.CTkFont(size=17, weight="bold"),
+                                                    text_color="black")
+        self.table2_label1.grid(row=0, column=0, padx=5, pady=5)
+        self.table2_label2 = customtkinter.CTkLabel(self.table2_frame,
+                                                    text= "0 FX",
+                                                    compound="left",
+                                                    font=customtkinter.CTkFont(size=17, weight="bold"),
+                                                    text_color="black",
+                                                    bg_color="green",
+                                                    corner_radius=10,
+                                                    height=50,
+                                                    width=50)
+        self.table2_label2.grid(row=1, column=0, padx=5, pady=5)
+        #table 3
+        self.table3_frame = customtkinter.CTkFrame(self.tables_frame, corner_radius=0, fg_color="transparent")
+        self.table3_frame.grid(row=0, column=2, padx=5, pady=5)
+        self.table3_label1 = customtkinter.CTkLabel(self.table3_frame,
+                                                    text="Table 3",
+                                                    compound="left",
+                                                    font=customtkinter.CTkFont(size=17, weight="bold"),
+                                                    text_color="black")
+        self.table3_label1.grid(row=0, column=0, padx=5, pady=5)
+        self.table3_label2 = customtkinter.CTkLabel(self.table3_frame,
+                                                    text= "0 FX",
+                                                    compound="left",
+                                                    font=customtkinter.CTkFont(size=17, weight="bold"),
+                                                    text_color="black",
+                                                    bg_color="green",
+                                                    corner_radius=10,
+                                                    height=50,
+                                                    width=50)
+        self.table3_label2.grid(row=1, column=0, padx=5, pady=5)
+        #table 4
+        self.table4_frame = customtkinter.CTkFrame(self.tables_frame, corner_radius=0, fg_color="transparent")
+        self.table4_frame.grid(row=0, column=3, padx=5, pady=5)
+        self.table4_label1 = customtkinter.CTkLabel(self.table4_frame,
+                                                    text="Table 4",
+                                                    compound="left",
+                                                    font=customtkinter.CTkFont(size=17, weight="bold"),
+                                                    text_color="black")
+        self.table4_label1.grid(row=0, column=0, padx=5, pady=5)
+        self.table4_label2 = customtkinter.CTkLabel(self.table4_frame,
+                                                    text= "0 FX",
+                                                    compound="left",
+                                                    font=customtkinter.CTkFont(size=17, weight="bold"),
+                                                    text_color="black",
+                                                    bg_color="green",
+                                                    corner_radius=10,
+                                                    height=50,
+                                                    width=50)
+        self.table4_label2.grid(row=1, column=0, padx=5, pady=5)
+        #table 5
+        self.table5_frame = customtkinter.CTkFrame(self.tables_frame, corner_radius=0, fg_color="transparent")
+        self.table5_frame.grid(row=0, column=4, padx=5, pady=5)
+        self.table5_label1 = customtkinter.CTkLabel(self.table5_frame,
+                                                    text="Table 5",
+                                                    compound="left",
+                                                    font=customtkinter.CTkFont(size=17, weight="bold"),
+                                                    text_color="black")
+        self.table5_label1.grid(row=0, column=0, padx=5, pady=5)
+        self.table5_label2 = customtkinter.CTkLabel(self.table5_frame,
+                                                    text= "0 FX",
+                                                    compound="left",
+                                                    font=customtkinter.CTkFont(size=17, weight="bold"),
+                                                    text_color="black",
+                                                    bg_color="green",
+                                                    corner_radius=10,
+                                                    height=50,
+                                                    width=50)
+        self.table5_label2.grid(row=1, column=0, padx=5, pady=5)
         # create second frame
         self.second_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
 
@@ -506,11 +563,11 @@ class App(customtkinter.CTk):
         date_prd = self.home_frame_entry_3.get()
         try:
             dt_prod = datetime.strptime(date_prd, "%d-%m-%Y %H:%M:%S")
+            rework_data["prod_date"] = dt_prod
         except Exception:
             self.home_frame_entry_3.delete(0, customtkinter.END)
             messagebox.showerror("Error", "Invalid Date and Time!!!")
             return
-        rework_data["prod_date"] = date_prd
         
         # Rework Card Check
         rework_card = self.home_frame_entry_2.get()
@@ -575,6 +632,7 @@ class App(customtkinter.CTk):
         # print Label
         #generate_label(rework_card, 'start', label_data)
         # save data to csv
+        self.table_status()
         self.clear_home_entries()
         
     def select_frame_by_name(self, name):
@@ -616,6 +674,7 @@ class App(customtkinter.CTk):
         self.user = get_obj("users", "username", self.operator)
         if self.user:
             if self.user["password"] == self.password:
+                self.table_status()
                 self.select_frame_by_name("home")
                 self.login_frame_entry_2.delete(0, customtkinter.END)
                 self.login_frame_entry_1.set("")
@@ -653,8 +712,37 @@ class App(customtkinter.CTk):
         self.home_frame_entry_2.delete(0, customtkinter.END)
         self.home_frame_entry_3.delete(0, customtkinter.END)
         self.home_frame_entry_4.delete(0, customtkinter.END)
+        self.home_frame_entry_r.delete(0, customtkinter.END)
         self.home_frame_entry_5_sub.set("")
         self.home_frame_entry_6.set("")
+        self.sup_entry.set("")
+        self.rework_table_entry.set("")
+        self.reworker_entry.set("")
+    
+    def table_status(self):
+        d1 = 0
+        d2 = 0
+        d3 = 0
+        d4 = 0
+        d5 = 0
+        data = get_all("reworkdetails")
+        for d in data:
+            if d["reworktable"] == 1 and d["status"] == "Open":
+                d1 += 1
+            elif d["reworktable"] == 2 and d["status"] == "Open":
+                d2 += 1
+            elif d["reworktable"] == 3 and d["status"] == "Open":
+                d3 += 1
+            elif d["reworktable"] == 4 and d["status"] == "Open":
+                d4 += 1
+            elif d["reworktable"] == 5 and d["status"] == "Open":
+                d5 += 1
+        self.table1_label2.configure(text= "{} FX".format(d1), bg_color="red" if d1 > 0 else "green")
+        self.table2_label2.configure(text= "{} FX".format(d2), bg_color="red" if d2 > 0 else "green")
+        self.table3_label2.configure(text= "{} FX".format(d3), bg_color="red" if d3 > 0 else "green")
+        self.table4_label2.configure(text= "{} FX".format(d4), bg_color="red" if d4 > 0 else "green")
+        self.table5_label2.configure(text= "{} FX".format(d5), bg_color="red" if d5 > 0 else "green")
+        
 
 if __name__ == "__main__":
     app = App()

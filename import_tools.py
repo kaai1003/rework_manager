@@ -44,11 +44,11 @@ elif table_selected == "3":
         obj.save()
     exit(0)
 elif table_selected == "4":
-    process = load_csv("lines.csv")
+    process = load_csv("process.csv")
     for p in process:
         obj = Process(**p)
         obj.save()
-        exit(0)
+    exit(0)
 elif table_selected == "5":
     projects = load_csv("projects.csv")
     for p in projects:
