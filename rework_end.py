@@ -7,6 +7,7 @@ from datetime import datetime
 from models.engine.database_manager import get_all
 from models.engine.database_manager import get_obj
 from models.reworkdetails import ReworkDetails
+from models.engine.print_label import generate_label
 
 
 class App(customtkinter.CTk):
@@ -133,19 +134,45 @@ class App(customtkinter.CTk):
                                                     font=customtkinter.CTkFont(size=20, weight="bold"),
                                                     command=self.login_button_event)
         self.login_button.grid(row=4, column=0, padx=20, pady=40)
+        
+        
+        
         # create home frame
         self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.home_frame.grid_columnconfigure(0, weight=1)
 
         self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="", image=self.large_test_image)
-        self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=0)
+        self.home_frame_large_image_label.grid(row=1, column=0, padx=20, pady=0)
 
         self.home_frame_label = customtkinter.CTkLabel(self.home_frame,
                                                        text="",
                                                        image=self.info_image)
-        self.home_frame_label.grid(row=1, column=0, padx=20, pady=0)
+        self.home_frame_label.grid(row=2, column=0, padx=20, pady=0)
         self.home_frame_image_label = customtkinter.CTkLabel(self.home_frame, text="", image=self.qrcode_image)
-        self.home_frame_image_label.grid(row=2, column=0, padx=20, pady=10)
+        self.home_frame_image_label.grid(row=3, column=0, padx=20, pady=10)
+        
+        # User Informations Frame
+        self.info_user_frame = customtkinter.CTkFrame(self.home_frame, corner_radius=0, fg_color="orange")
+        self.info_user_frame.grid(row=0, column=0, padx=20, pady=0)
+        
+        self.info_username_label = customtkinter.CTkLabel(self.info_user_frame,
+                                                          text="Username : ",
+                                                          compound="left",
+                                                          font=customtkinter.CTkFont(size=20, weight="bold"),
+                                                          text_color="blue")
+        self.info_username_label.grid(row=0, column=0, padx=20, pady=0)
+        self.info_usercard_label = customtkinter.CTkLabel(self.info_user_frame,
+                                                          text="Usercard : ",
+                                                          compound="left",
+                                                          font=customtkinter.CTkFont(size=20, weight="bold"),
+                                                          text_color="blue")
+        self.info_usercard_label.grid(row=0, column=1, padx=20, pady=0)
+        self.info_role_label = customtkinter.CTkLabel(self.info_user_frame,
+                                                          text="role : ",
+                                                          compound="left",
+                                                          font=customtkinter.CTkFont(size=20, weight="bold"),
+                                                          text_color="blue")
+        self.info_role_label.grid(row=0, column=2, padx=20, pady=0)
         
         #rework Infos Frame
         self.rework_infos_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -158,7 +185,7 @@ class App(customtkinter.CTk):
                                                        image=self.info_image)
         self.home_frame_label1.grid(row=1, column=0, padx=20, pady=0)
         
-        self.fx_infos_frame = customtkinter.CTkFrame(self.rework_infos_frame, corner_radius=0, fg_color="transparent")
+        self.fx_infos_frame = customtkinter.CTkFrame(self.rework_infos_frame, corner_radius=0, fg_color="transparent", border_width=1, border_color="black")
         self.fx_infos_frame.grid(row=2, column=0, padx=20, pady=0)
         self.fx_infos_label_1 = customtkinter.CTkLabel(self.fx_infos_frame,
                                                          text="Reference: ",
@@ -184,6 +211,12 @@ class App(customtkinter.CTk):
                                                         font=customtkinter.CTkFont(size=25, weight="bold"),
                                                         text_color="blue")
         self.fx_infos_label4.grid(row=3, column=0, padx=10, pady=5)
+        self.fx_infos_label10 = customtkinter.CTkLabel(self.fx_infos_frame,
+                                                        text="Reworker: ",
+                                                        compound="left",
+                                                        font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                        text_color="blue")
+        self.fx_infos_label10.grid(row=4, column=0, padx=10, pady=5)
         self.fx_infos_label5 = customtkinter.CTkLabel(self.fx_infos_frame,
                                                         text="Line: ",
                                                         compound="left",
@@ -206,14 +239,44 @@ class App(customtkinter.CTk):
                                                         text="Erreur: ",
                                                         compound="left",
                                                         font=customtkinter.CTkFont(size=25, weight="bold"),
-                                                        text_color="blue")
+                                                        text_color="red")
         self.fx_infos_label8.grid(row=3, column=1, padx=10, pady=5)
         self.fx_infos_label9 = customtkinter.CTkLabel(self.fx_infos_frame,
                                                         text="Erreur Details: ",
                                                         compound="left",
                                                         font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                        text_color="red")
+        self.fx_infos_label9.grid(row=4, column=1, padx=10, pady=5)
+        self.fx_infos_label11 = customtkinter.CTkLabel(self.fx_infos_frame,
+                                                        text="Rework Table: ",
+                                                        compound="left",
+                                                        font=customtkinter.CTkFont(size=25, weight="bold"),
                                                         text_color="blue")
-        self.fx_infos_label9.grid(row=4, column=0, padx=10, pady=5)
+        self.fx_infos_label11.grid(row=5, column=0, padx=10, pady=5)
+        
+        # Buttons Validation frame
+        self.fx_validation_frame = customtkinter.CTkFrame(self.rework_infos_frame, corner_radius=0, fg_color="transparent")
+        self.fx_validation_frame.grid(row=3, column=0, padx=20, pady=0)
+        
+        # Button Validation and Print
+        self.validation_button = customtkinter.CTkButton(self.fx_validation_frame,
+                                                           text="Validate Rework Rework",
+                                                           font=customtkinter.CTkFont(size=17, weight="bold"),
+                                                           command=self.on_submit,
+                                                           fg_color=("green"),
+                                                           height=50,
+                                                           width=200)
+        self.validation_button.grid(row=0, column=0, padx=20, pady=20)
+        
+        # Button Reject
+        self.reject_button = customtkinter.CTkButton(self.fx_validation_frame,
+                                                           text="Reject Rework",
+                                                           font=customtkinter.CTkFont(size=17, weight="bold"),
+                                                           command=self.on_reject,
+                                                           fg_color=("red"),
+                                                           height=50,
+                                                           width=200)
+        self.reject_button.grid(row=0, column=1, padx=20, pady=20)
         
         # scan QR code
         self.home_frame_entry_1 = customtkinter.CTkEntry(self.home_frame, placeholder_text="SCAN QR CODE LABEL",
@@ -226,7 +289,7 @@ class App(customtkinter.CTk):
                                                          fg_color=("#b9dbfc"),
                                                          state="normal",
                                                          show='*')
-        self.home_frame_entry_1.grid(row=3, column=0, padx=20, pady=0)
+        self.home_frame_entry_1.grid(row=4, column=0, padx=20, pady=0)
         
         # Button save and Print
         self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame,
@@ -252,58 +315,32 @@ class App(customtkinter.CTk):
 
     def on_submit(self, event=None):
         """save harness info"""
-        filename = get_csv_name('end_rework')
         label_data = {}
-        csv_data = []
         label_data['OPERATOR'] = self.operator
-        csv_data.append(self.operator)
-        # check Reference
-        qr_code = self.home_frame_entry_1.get()
-        reword_data = qr_code.split(';')
-        if len(reword_data) < 3:
-            self.home_frame_entry_1.delete(0, customtkinter.END)
-            messagebox.showerror("Error", "Invalid QRCode!!!")
-            return
-        ref = check_ref(reword_data[1])
-        if ref is None:
-            self.home_frame_entry_1.delete(0, customtkinter.END)
-            messagebox.showerror("Error", "Invalid Reference!!!")
-            return
-        label_data['PROJECT'] = ref[0]
-        csv_data.append(ref[0])
-        label_data['REFERENCE'] = ref[1]
-        csv_data.append(ref[1])
-        csv_data.append('None')
-        csv_data.append('None')
-        # Rework Card Check
-        rework_card = reword_data[0]
-        path = 'data/data_rework/{}'.format(filename)
-        data = read_from_csv(path, rework_card)
-        if data:
-            self.home_frame_entry_1.delete(0, customtkinter.END)
-            messagebox.showerror("Error", "Harness Already Exist!!!")
-            return
-        csv_data.append(rework_card)
-        # check Fault Description
-        csv_data.append('None')
-        # check Failure Process
-        csv_data.append('None')
-        start_time = datetime.strptime(reword_data[2], "%Y-%m-%d %H:%M:%S")
-        csv_data.append(start_time)
+        self.rework_obj.quality = self.operator
+        label_data['PROJECT'] = self.rework_obj.project
+        label_data['REFERENCE'] = self.rework_obj.ref
+        self.rework_obj.status = "Finished"
+        start_time = self.rework_obj.created_at
         end_time = datetime.now()
-        csv_data.append(end_time.strftime("%Y-%m-%d %H:%M:%S"))
+        
         rework_time = end_time - start_time
         rework_time = rework_time.total_seconds() / 60
-        csv_data.append(round(rework_time, 2))
+        self.rework_obj.reworkduration = round(rework_time, 2)
+        self.rework_obj.update()
         label_data['DATETIME'] = end_time.strftime("%Y-%m-%d %H:%M:%S")
-        label_data['REWORKDATA'] = rework_card
-        label_data['REWORKTIME'] = rework_card
+        label_data['REWORKDATA'] = self.rework_obj.reworkcard
+        label_data['REWORKTIME'] = round(rework_time, 2)
         
         # print Label
-        #generate_label(rework_card, 'end', label_data)
+        generate_label(label_data['REWORKDATA'], 'end', label_data)
         # save data to csv
+        self.select_frame_by_name("home")
         self.home_frame_entry_1.delete(0, customtkinter.END)
-        
+
+    def on_reject(self):
+        self.select_frame_by_name("home")
+        return
     def select_frame_by_name(self, name):
         # set button color for selected button
         self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")
@@ -316,6 +353,9 @@ class App(customtkinter.CTk):
         else:
             self.login_frame.grid_forget()
         if name == "home":
+            self.info_username_label.configure(text= "Username : " + self.user["username"])
+            self.info_usercard_label.configure(text= "Usercard : " + self.user["usercard"])
+            self.info_role_label.configure(text= "Role : " + self.user["role"])
             self.home_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.home_frame.grid_forget()
@@ -393,6 +433,42 @@ class App(customtkinter.CTk):
         self.home_frame_entry_6.delete(0, customtkinter.END)
 
     def show_infos(self):
+        #check qrcode
+        qr_code = self.home_frame_entry_1.get()
+        rework_data = qr_code.split(';')
+        if len(rework_data) < 2:
+            self.home_frame_entry_1.delete(0, customtkinter.END)
+            messagebox.showerror("Error", "Invalid QRCode!!!")
+            return
+        ref = get_obj("reference","ref", rework_data[1])
+        if ref is None:
+            self.home_frame_entry_1.delete(0, customtkinter.END)
+            messagebox.showerror("Error", "Invalid Reference!!!")
+            return
+        r_card = get_obj("reworkdetails", "reworkcard", rework_data[0])
+        if r_card:
+            if r_card["status"] == "Finished":
+                self.home_frame_entry_1.delete(0, customtkinter.END)
+                messagebox.showerror("Error", "FX Already Reworked!!!")
+                return
+            self.rework_obj = ReworkDetails(**r_card)
+            self.fx_infos_label_1.configure(text= "Reference :" + r_card["ref"])
+            self.fx_infos_label2.configure(text= "Project :" + r_card["project"])
+            self.fx_infos_label3.configure(text= "Famille :" + r_card["famille"])
+            self.fx_infos_label4.configure(text= "Car Type :" + r_card["car_type"])
+            self.fx_infos_label5.configure(text= "Line :" + str(r_card["line"]))
+            self.fx_infos_label6.configure(text= "Superviseur :" + r_card["superviseur"])
+            self.fx_infos_label7.configure(text= "Production Date :" + str(r_card["prod_date"]))
+            self.fx_infos_label8.configure(text= "Erreur :" + r_card["reworkfailure"])
+            self.fx_infos_label9.configure(text= "Erreur Details :" + r_card["failuredetails"])
+            self.fx_infos_label10.configure(text= "Reworker :" + r_card["reworker"])
+            self.fx_infos_label11.configure(text= "Rework Table :" + str(r_card["reworktable"]))
+            self.select_frame_by_name("rework")
+            self.home_frame_entry_1.delete(0, customtkinter.END)
+        else:
+           self.home_frame_entry_1.delete(0, customtkinter.END)
+           messagebox.showerror("Error", "FX Not Found!!!")
+           return
 
 if __name__ == "__main__":
     app = App()

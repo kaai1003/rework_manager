@@ -8,6 +8,7 @@ from datetime import datetime
 from models.engine.database_manager import get_all
 from models.engine.database_manager import get_obj
 from models.reworkdetails import ReworkDetails
+from models.engine.print_label import generate_label
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -625,13 +626,11 @@ class App(customtkinter.CTk):
         rework_obj.save()
         start_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         label_data['DATETIME'] = start_time
-        label_data['REWORKDATA'] = '{};{};{}'.format(rework_card,
-                                                 ref["ref"],
-                                                 start_time)
+        label_data['REWORKDATA'] = '{};{}'.format(rework_card,
+                                                 ref["ref"])
         
         # print Label
-        #generate_label(rework_card, 'start', label_data)
-        # save data to csv
+        generate_label(rework_card, 'start', label_data)
         self.table_status()
         self.clear_home_entries()
         
